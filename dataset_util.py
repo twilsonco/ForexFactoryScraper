@@ -27,20 +27,18 @@ def delete_multiple_lines(original_file, line_numbers):
 
 
 if __name__ == '__main__':
-    count = dict()
-    lineNumbers = list()
+    seen = set()
+    lineNumbers = []
     with open('forex_factory_catalog.csv', mode='r') as file:
         reader = csv.reader(file, delimiter=',')
         for i, row in enumerate(reader):
-            if row[2] != 'Non-Economic':
-
-                if row[0] not in count:
-                    count[row[0]] = {row[3]: {row[1]: 0}}
-                elif row[3] not in count[row[0]]:
-                    count[row[0]][row[3]] = {row[1]: 0}
-                elif row[1] not in count[row[0]][row[3]]:
-                    count[row[0]][row[3]][row[1]] = 0
-                else:
-                    lineNumbers.append(i)
-                count[row[0]][row[3]][row[1]] = count[row[0]][row[3]][row[1]] + 1
+            # Remove rows where all fields except date are empty
+            if row[0] and all(not field.strip() for field in row[1:]):
+                lineNumbers.append(i)
+                continue
+            row_tuple = tuple(row)
+            if row_tuple in seen:
+                lineNumbers.append(i)
+            else:
+                seen.add(row_tuple)
     delete_multiple_lines(original_file='forex_factory_catalog.csv', line_numbers=lineNumbers)

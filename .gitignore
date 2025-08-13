@@ -1,5 +1,23 @@
-errors.csv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+ENV/
+
+# VS Code
+.vscode/
+
+# Output files
 forex_factory_catalog.csv
+errors.csv
 logs_file
 chromedriver.exe
-venv
+
+# System
+.DS_Store
+
+# Backup files
+*.bak
